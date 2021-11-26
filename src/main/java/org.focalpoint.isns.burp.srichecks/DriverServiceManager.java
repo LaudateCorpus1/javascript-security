@@ -2,46 +2,30 @@
  * BurpSuite JavaScript Security Extension
  * Copyright (C) 2019  Focal Point Data Risk, LLC
  * Written by: Peter Hefley
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General 
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General
  * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
  * any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
- * 
- * You should have received a copy of the GNU General Public License along with this program.  
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
 package org.focalpoint.isns.burp.srichecks;
 
-import burp.IBurpExtenderCallbacks;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
-
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.remote.RemoteWebDriver;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 
 public class DriverServiceManager {
 
     private String chromeDriverFilePath;
-    private static String DEFAULT_DRIVER_PATH = "/usr/lib/chromium-browser/chromedriver";
     private ChromeDriverService service;
 
     public DriverServiceManager(){
-        chromeDriverFilePath = DEFAULT_DRIVER_PATH;
         startDriverService();
     }
 
@@ -49,9 +33,12 @@ public class DriverServiceManager {
     public void startDriverService(){
         try{
             // https://seleniumhq.github.io/selenium/docs/api/java/
-            File driverFile;
-            driverFile = new File(chromeDriverFilePath);
-            service = new ChromeDriverService.Builder().usingDriverExecutable(driverFile).usingAnyFreePort().build();
+            ChromeDriverService.Builder builder = new ChromeDriverService.Builder().usingAnyFreePort();
+            if (chromeDriverFilePath != null) {
+                builder.usingDriverExecutable(new File(chromeDriverFilePath));
+            }
+
+            service = builder.build();
             service.start();
         }
         catch (IOException e){
