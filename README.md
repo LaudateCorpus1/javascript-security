@@ -1,3 +1,9 @@
+# Building
+
+`./gradlew fatJar`
+
+The output JAR will be located inside `build/libs` folder e.g. `javascript-security-extension-all-1.1.jar`
+
 # JavaScript Security Burp Extension
 This is a burp extension which adds passive checks to the Burp scanner. The following is a list of items it will look for:
 
