@@ -19,7 +19,6 @@ jobs:
       contents: read
       packages: write
 
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -40,7 +39,7 @@ jobs:
     - name: Publish to GitHub Packages
       uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
       with:
-        arguments: publish
+        arguments: publish -x test
       env:
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
